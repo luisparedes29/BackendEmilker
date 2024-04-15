@@ -10,8 +10,7 @@ const registerUser = async (req, res) => {
         .status(400)
         .json({ error: 'El nombre, usuario y la contraseña son requeridos.' })
     }
-
-    const usuarioExistente = await Users.findOne({ usuario })
+    const usuarioExistente = await Users.findOne({ user: usuario })
     if (usuarioExistente) {
       return res
         .status(400)
@@ -53,13 +52,14 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const { usuario, contraseña, isAdmin } = req.body
+    const { usuario, contraseña } = req.body
     if (!usuario || !contraseña) {
       return res.status(400).json({
         error: 'El usuario y la contraseña son requeridos para iniciar sesión'
       })
     }
-    const user = await Users.findOne({ usuario })
+    console.log(usuario)
+    const user = await Users.findOne({ user: usuario })
     if (!user) {
       return res.status(400).json({ error: 'El usuario no existe' })
     }
